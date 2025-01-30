@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.18;
 
 contract dPost {
     struct Post {
@@ -17,6 +17,7 @@ contract dPost {
     event PostCreated(uint indexed postId, address indexed author, string content);
     event Upvoted(uint indexed postId, address indexed voter, uint newUpvoteCount);
 
+    //  Function to create a post
     function createPost(string memory _content) public {
         require(bytes(_content).length > 0, "Content cannot be empty");
         postCounter++;
@@ -24,17 +25,22 @@ contract dPost {
         emit PostCreated(postCounter, msg.sender, _content);
     }
 
+    //  Function to upvote a post
     function upvotePost(uint _postId) public payable {
         require(msg.value == 0.01 ether, "Upvote requires 0.01 ETH");
         require(posts[_postId].postId != 0, "Post does not exist");
+
         posts[_postId].upvotes++;
         balances[posts[_postId].author] += msg.value;
+
         emit Upvoted(_postId, msg.sender, posts[_postId].upvotes);
     }
 
+    //  Function to withdraw earnings
     function withdrawEarnings() public {
         uint balance = balances[msg.sender];
         require(balance > 0, "No earnings to withdraw");
+
         balances[msg.sender] = 0;
         payable(msg.sender).transfer(balance);
     }

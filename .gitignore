@@ -1,0 +1,12 @@
+# Ignore environment variables
+.env
+
+# Node.js dependencies
+node_modules/
+
+# Hardhat cache and artifacts
+cache/
+artifacts/
+
+# System files
+.DS_Store
