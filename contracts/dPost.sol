@@ -27,14 +27,15 @@ contract dPost {
 
     //  Function to upvote a post
     function upvotePost(uint _postId) public payable {
-        require(msg.value == 0.01 ether, "Upvote requires 0.01 ETH");
-        require(posts[_postId].postId != 0, "Post does not exist");
+    require(msg.value >= 0.01 ether, "Upvote requires 0.01 ETH"); // Ensure enough ETH is sent
+    require(posts[_postId].postId != 0, "Post does not exist");  // Ensure the post exists
 
-        posts[_postId].upvotes++;
-        balances[posts[_postId].author] += msg.value;
+    Post storage post = posts[_postId];
+    post.upvotes += 1; // Increment upvotes
+    balances[post.author] += msg.value; // Transfer ETH to the author
 
-        emit Upvoted(_postId, msg.sender, posts[_postId].upvotes);
-    }
+    emit Upvoted(_postId, msg.sender, post.upvotes); // Emit event
+}
 
     //  Function to withdraw earnings
     function withdrawEarnings() public {

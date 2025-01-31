@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getBlockchain } from "../ethers";
+import { getBlockchain } from "../ethers"// Adjust the import path as needed
 
 const WalletConnect = ({ setDPostContract }) => {
   const [walletAddress, setWalletAddress] = useState("");

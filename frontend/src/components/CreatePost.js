@@ -7,7 +7,7 @@ const CreatePost = ({ dPostContract }) => {
 
   const createPost = async () => {
     if (!dPostContract) {
-      setMessage("Smart contract is not connected. Please connect your wallet.");
+      setMessage("Smart contract is not connected.");
       return;
     }
     if (!content.trim()) {
@@ -18,9 +18,9 @@ const CreatePost = ({ dPostContract }) => {
     try {
       setLoading(true);
       const tx = await dPostContract.createPost(content);
-      await tx.wait(); // Wait for transaction confirmation
+      await tx.wait();
       setMessage("Post created successfully!");
-      setContent(""); // Clear input field
+      setContent("");
     } catch (error) {
       console.error("Error creating post:", error);
       setMessage("Failed to create post.");
@@ -30,20 +30,18 @@ const CreatePost = ({ dPostContract }) => {
   };
 
   return (
-    <div style={{ marginTop: "20px" }}>
+    <div className="card">
       <h2>Create a Post</h2>
       <textarea
+        className="textarea"
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Write something..."
-        rows="3"
-        cols="50"
-        style={{ display: "block", marginBottom: "10px", padding: "10px" }}
       />
-      <button onClick={createPost} disabled={loading}>
+      <button className="button" onClick={createPost} disabled={loading}>
         {loading ? "Posting..." : "Create Post"}
       </button>
-      {message && <p>{message}</p>}
+      {message && <p className="message">{message}</p>}
     </div>
   );
 };
