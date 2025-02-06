@@ -1,6 +1,5 @@
 import { ethers } from "ethers";
 
-// Replace this with your deployed contract address on Sepolia
 const contractAddress = "0x0459Df79bF3D6Ba6f6d587628D5D18E24c990544"; // Your Sepolia contract address
 
 
@@ -162,14 +161,21 @@ const contractABI = [
   ];
   
 
-export const getBlockchain = async () => {
-  if (!window.ethereum) {
-    throw new Error("MetaMask is not installed. Please install it to use this app.");
-  }
-
-  const provider = new ethers.BrowserProvider(window.ethereum); // Connect to MetaMask
-  const signer = await provider.getSigner(); // Get the user's wallet signer
-  const dPostContract = new ethers.Contract(contractAddress, contractABI, signer); // Link to the contract
-
-  return { provider, signer, dPostContract };
-};
+  export const getBlockchain = async () => {
+    if (!window.ethereum) {
+      alert("MetaMask is required to use this app.");
+      throw new Error("MetaMask not found");
+    }
+  
+    // Request wallet connection
+    await window.ethereum.request({ method: "eth_requestAccounts" });
+  
+    // Initialize ethers.js provider and signer
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+  
+    // Initialize contract with signer
+    const dPostContract = new ethers.Contract(contractAddress, contractABI, signer);
+  
+    return { dPostContract, signer };
+  };

@@ -13,10 +13,14 @@ const WithdrawEarnings = ({ dPostContract }) => {
     }
 
     try {
-      // Fetch the signer from the contract
-      const signer = dPostContract.signer;
-      const signerAddress = await signer.getAddress(); // Ensure signer is valid
-      const userBalance = await dPostContract.balances(signerAddress); // Fetch user balance
+      // Get provider and signer
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const signerAddress = await signer.getAddress();
+
+      console.log("Signer Address:", signerAddress);
+
+      const userBalance = await dPostContract.balances(signerAddress);
       setBalance(ethers.formatEther(userBalance)); // Convert Wei to ETH
     } catch (error) {
       console.error("Error fetching balance:", error);

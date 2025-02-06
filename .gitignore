@@ -10,3 +10,5 @@ artifacts/
 
 # System files
 .DS_Store
+
+.nes
